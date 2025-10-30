@@ -1,5 +1,7 @@
 #!/bin/bash
 
+EXECUTABLE=./assembler
+
 cd /autograder/grader
 mkdir /autograder/results
 mkdir /autograder/source
@@ -18,8 +20,8 @@ chmod +x ./setup.sh
 runuser -u student -- ./setup.sh
 
 rm *.asm *.hack
-chmod +x ./autograder
-runuser -u student -- ls *.asm | xargs -I{} ./autograder $(pwd)/{}
+chmod +x "${EXECUTABLE}"
+runuser -u student -- ls *.asm | xargs -I{} ${EXECUTABLE} $(pwd)/{}
 
 popd
 uv run src/run_tests.py
