@@ -1,0 +1,9 @@
+[project]
+name = "project-6-autograder"
+version = "0.1.0"
+description = "verifies the functionality of the assembler"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "gradescope-utils>=0.5.0",
+]
