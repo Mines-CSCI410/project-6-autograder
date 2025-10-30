@@ -19,7 +19,7 @@ cp /autograder/grader/tests/*.asm .
 chmod +x ./setup.sh
 runuser -u student -- ./setup.sh
 
-rm *.asm *.hack
+rm *.hack
 chmod +x "${EXECUTABLE}"
 runuser -u student -- ls *.asm | xargs -I{} ${EXECUTABLE} $(pwd)/{}
 
