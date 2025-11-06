@@ -12,12 +12,12 @@ chmod o= /autograder/results
 chmod o= /autograder/outputs
 chmod +rwx /autograder/source
 
-cp -r /autograder/submission/ /autograder/source/
+cp -r /autograder/submission/* /autograder/source/
 
 pushd /autograder/source/
 
 # remove any hack or asm files in submission and copy test asm files over
-rm *.asm *.hack
+rm -f *.asm *.hack
 cp /autograder/grader/tests/*.asm .
 
 # run student-submitted setup script (untrusted)
@@ -25,7 +25,7 @@ chmod +x ./setup.sh
 runuser -u student -- ./setup.sh
 
 # in case setup.sh created hack files
-rm *.hack
+rm -f *.hack
 
 # run student-submitted code (untrusted)
 chmod +x "${EXECUTABLE}"
