@@ -3,7 +3,7 @@
 EXECUTABLE=./assembler
 
 cd /autograder/grader
-mkdir /autograder/results
+mkdir -p /autograder/results
 mkdir /autograder/outputs
 mkdir /autograder/source
 
