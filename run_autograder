@@ -2,16 +2,6 @@
 
 EXECUTABLE=./assembler
 
-cd /autograder/grader
-mkdir -p /autograder/results
-mkdir /autograder/outputs
-mkdir /autograder/source
-
-chmod o= /autograder/submission
-chmod o= /autograder/results
-chmod o= /autograder/outputs
-chmod ugo+rwx /autograder/source
-
 cp -r /autograder/submission/* /autograder/source/
 
 pushd /autograder/source/ >/dev/null
@@ -33,4 +23,5 @@ chmod ugo+x "${EXECUTABLE}"
 popd >/dev/null
 
 # diff outputs with expected
+cd /autograder/grader
 uv run src/run_tests.py

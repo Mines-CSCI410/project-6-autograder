@@ -47,3 +47,15 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Setup unprivileged user
 RUN adduser student --no-create-home --disabled-password --gecos ""
+
+# Configure access to directories
+RUN mkdir -p /autograder/submission
+RUN mkdir -p /autograder/results
+RUN mkdir /autograder/outputs
+RUN mkdir /autograder/source
+
+RUN chmod o= /autograder/grader
+RUN chmod o= /autograder/submission
+RUN chmod o= /autograder/results
+RUN chmod o= /autograder/outputs
+RUN chmod -R ugo+rwx /autograder/source
