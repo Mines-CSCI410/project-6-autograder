@@ -12,7 +12,7 @@ chmod o= /autograder/results
 chmod o= /autograder/outputs
 chmod +rwx /autograder/source
 
-cp /autograder/submission/ /autograder/source/
+cp -r /autograder/submission/ /autograder/source/
 
 pushd /autograder/source/
 
