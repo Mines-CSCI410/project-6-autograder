@@ -5,7 +5,10 @@ from os import path
 from gradescope_utils.autograder_utils.decorators import weight, number
 
 class TestBase(unittest.TestCase): 
-    def assertNoDiff(self, _name):
+    def assertNoDiff(self, name):
+        res = subprocess.call(['diff', f'/autograder/outputs/{name}.hack', f'/autograder/grader/tests/expected-outputs/{name}.hack', '-qsw', '--strip-trailing-cr'])
+        if res != 0:
+            raise AssertionError('Assembler output does not mach the expected output!')
         pass
 
 class TestModules(TestBase): 
