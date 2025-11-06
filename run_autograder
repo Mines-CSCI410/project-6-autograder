@@ -10,11 +10,11 @@ mkdir /autograder/source
 chmod o= /autograder/submission
 chmod o= /autograder/results
 chmod o= /autograder/outputs
-chmod +rwx /autograder/source
+chmod ugo+rwx /autograder/source
 
 cp -r /autograder/submission/* /autograder/source/
 
-pushd /autograder/source/
+pushd /autograder/source/ >/dev/null
 
 # remove any hack or asm files in submission and copy test asm files over
 rm -f *.asm *.hack
@@ -28,13 +28,9 @@ runuser -u student -- ./setup.sh
 rm -f *.hack
 
 # run student-submitted code (untrusted)
-chmod +x "${EXECUTABLE}"
-runuser -u student -- ls *.asm | xargs -I{} ${EXECUTABLE} $(pwd)/{}
+chmod ugo+x "${EXECUTABLE}"
 
-# copy outputs to own directory
-mv *.hack /autograder/outputs
-
-popd
+popd >/dev/null
 
 # diff outputs with expected
 uv run src/run_tests.py
