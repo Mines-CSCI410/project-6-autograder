@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EXECUTABLE=./assembler
+EXECUTABLE=./Assembler
 
 pushd /autograder/source/ >/dev/null
 

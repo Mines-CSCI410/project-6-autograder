@@ -1,14 +1,13 @@
 #!/bin/bash
 
-EXECUTABLE=./assembler
+EXECUTABLE=./Assembler
 
 cp -r /autograder/submission/* /autograder/source/
 
 pushd /autograder/source/ >/dev/null
 
-# remove any hack or asm files in submission and copy test asm files over
+# remove any hack or asm files in submission
 rm -f *.asm *.hack
-cp /autograder/grader/tests/*.asm .
 
 # run student-submitted setup script (untrusted)
 chmod +x ./setup.sh
@@ -17,7 +16,9 @@ runuser -u student -- ./setup.sh
 # in case setup.sh created hack files
 rm -f *.hack
 
-# run student-submitted code (untrusted)
+# copy test files over
+cp /autograder/grader/tests/*.asm .
+
 chmod ugo+x "${EXECUTABLE}"
 
 popd >/dev/null
