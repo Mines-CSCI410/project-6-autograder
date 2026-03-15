@@ -10,9 +10,9 @@ class TestBase(unittest.TestCase):
             raise AssertionError(f'Unable to run student\'s assembler on {name}.asm!')
 
     def assertNoDiff(self, name):
-        res = subprocess.call(['diff', f'/autograder/outputs/{name}.hack', f'/autograder/grader/tests/expected-outputs/{name}.hack', '-qsw', '--strip-trailing-cr'])
-        if res != 0:
-            raise AssertionError('Assembler output does not mach the expected output!')
+        res = subprocess.run(['diff', f'/autograder/outputs/{name}.hack', f'/autograder/grader/tests/expected-outputs/{name}.hack', '-swy', '--strip-trailing-cr'], capture_output=True, text=True)
+        if res.returncode != 0:
+            raise AssertionError(f'Assembler output does not mach the expected output!\n{res.stdout}')
 
     def assertCorrectAssemble(self, name):
         self.runStudentCode(name)
