@@ -2,7 +2,8 @@
 
 EXECUTABLE=./Assembler
 
-cp -r /autograder/submission/* /autograder/source/
+SUBMISSION_DIR=$(realpath $(dirname $(find -name 'setup.sh' -type f)))
+cp -r ${SUBMISSION_DIR}/* /autograder/source/
 
 pushd /autograder/source/ >/dev/null
 
