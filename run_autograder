@@ -21,6 +21,7 @@ rm -f *.hack
 # copy test files over
 cp /autograder/grader/tests/*.asm .
 
+dos2unix ./*
 chmod ugo+x "${EXECUTABLE}"
 
 popd >/dev/null
