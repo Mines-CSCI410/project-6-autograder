@@ -5,12 +5,17 @@ from gradescope_utils.autograder_utils.decorators import weight, number
 
 class TestBase(unittest.TestCase): 
     def runStudentCode(self, name):
-        res = subprocess.call(['./run_student_code.sh', f'{name}.asm'])
-        if res != 0:
-            raise AssertionError(f'Unable to run student\'s assembler on {name}.asm!')
+        try:
+            process = subprocess.run(['./run_student_code.sh', f'{name}.asm'], check=True, text=True, capture_output=True, timeout=30)
+            print(f'{process.stdout.strip()}\n{process.stderr.strip()}'.strip())
+        except subprocess.CalledProcessError as err:
+            error_message = str(err.stderr).strip()
+            raise AssertionError(f'Unable to run student code on {name}.asm: "{error_message}"\n{err.stdout}'.strip())
+        except subprocess.TimeoutExpired as err:
+            raise TimeoutError(f'Student code timed out after {err.timeout} seconds:\n{str(err.stdout).strip()}')
 
     def assertNoDiff(self, name):
-        res = subprocess.run(['diff', f'/autograder/outputs/{name}.hack', f'/autograder/grader/tests/expected-outputs/{name}.hack', '-swy', '--strip-trailing-cr'], capture_output=True, text=True)
+        res = subprocess.run(['diff', f'/autograder/outputs/{name}.hack', f'/autograder/grader/tests/expected-outputs/{name}.hack', '-swy', '--strip-trailing-cr'], check=True, text=True, capture_output=True, timeout=30)
         if res.returncode != 0:
             raise AssertionError(f'Assembler output does not mach the expected output!\n{res.stdout}')
 
