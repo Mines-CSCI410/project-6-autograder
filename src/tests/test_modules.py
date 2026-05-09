@@ -1,4 +1,5 @@
 import unittest
+import os
 import subprocess
 
 from gradescope_utils.autograder_utils.decorators import weight, number
@@ -14,14 +15,24 @@ class TestBase(unittest.TestCase):
         except subprocess.TimeoutExpired as err:
             raise TimeoutError(f'Student code timed out after {err.timeout} seconds:\n{str(err.stdout).strip()}')
 
-    def assertNoDiff(self, name):
-        res = subprocess.run(['diff', f'/autograder/outputs/{name}.hack', f'/autograder/grader/tests/expected-outputs/{name}.hack', '-swy', '--strip-trailing-cr'], check=True, text=True, capture_output=True, timeout=30)
-        if res.returncode != 0:
-            raise AssertionError(f'Assembler output does not mach the expected output!\n{res.stdout}')
+    def assertDiffMatch(self, name):
+        res = subprocess.call(['diff', f'/autograder/grader/tests/expected-outputs/{name}.hack', f'/autograder/source/{name}.hack', '-w', '--strip-trailing-cr'])
+        if res == 1:
+            diff = subprocess.check_output(['/bin/sh', '-c', f'diff /autograder/grader/tests/expected-outputs/{name}.hack /autograder/source/{name}.hack -w --strip-trailing-cr ; exit 0'], text=True)
+            print(f'Files differ!\n{diff}')
+            raise AssertionError(f'Student\'s HACK did not match the provided HACK file!')
+        elif res > 1:
+            raise AssertionError(f'Unable to diff output HACK with expected!')
+
+    def assertFileExists(self, path):
+        if not os.path.isfile(path):
+            raise AssertionError(f'File "{path}" does not exist!')
+
 
     def assertCorrectAssemble(self, name):
         self.runStudentCode(name)
-        self.assertNoDiff(name)
+        self.assertFileExists(f'/autograder/source/{name}.hack')
+        self.assertDiffMatch(name)
 
 class TestModules(TestBase): 
     @weight(95/7)
