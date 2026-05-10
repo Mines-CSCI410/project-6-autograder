@@ -28,7 +28,6 @@ class TestBase(unittest.TestCase):
         if not os.path.isfile(path):
             raise AssertionError(f'File "{path}" does not exist!')
 
-
     def assertCorrectAssemble(self, name):
         self.runStudentCode(name)
         self.assertFileExists(f'/autograder/source/{name}.hack')
