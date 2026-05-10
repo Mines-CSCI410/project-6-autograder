@@ -6,6 +6,7 @@ SUBMISSION_DIR=$(realpath $(dirname $(find /autograder/submission -name 'setup.s
 echo "Identified ${SUBMISSION_DIR} as root of project."
 cp -r ${SUBMISSION_DIR}/* /autograder/source/
 
+chmod -R ugo+rw /autograder/source
 pushd /autograder/source/ >/dev/null
 
 # remove any hack or asm files in submission
